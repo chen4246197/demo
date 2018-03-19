@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="/js/jquery-3.3.1.js"></script>
+    <script src="/js/tether.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <title>Insert title here</title>
+    <script>
+
+        function search(byType){
+            var userSortTypeValue =  $("#userSortType").val();
+            if("ID" == byType){
+                if("ID_DESC"==userSortTypeValue){
+                    $("#userSortType").val("ID_ASC");
+                }else{
+                    $("#userSortType").val("ID_DESC") ;
+                }
+            }else{
+                if("NAME_DESC"== userSortTypeValue){
+                    $("#userSortType").val("NAME_ASC");
+                }else{
+                    $("#userSortType").val("NAME_DESC") ;
+                }
+            }
+            $("#submit").click();
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+    <form action="/user/list" class="bs-example bs-example-form" id="form">
+        <div class="input-group">
+            <input type="number" name="id"  id="userId" class="form-control col-xs-3"  th:value="${#httpServletRequest.getParameter('id')}" />
+            <input type="text" name="name" id="name"   class="form-control col-xs-3" th:value="${#httpServletRequest.getParameter('name')}" />
+            <input type="hidden" name="userSortType" id="userSortType"  class="form-control col-xs-3" th:value="${#httpServletRequest.getParameter('userSortType')}" />
+            <button type="submit" id="submit" value="查询" class="btn btn-info" >查询</button>
+        </div>
+
+    </form>
+    </div>
+    <div class="row">
+    <table class="table table-striped">
+        <tr>
+            <th>id     <button type="text"  class="btn-sm btn-info"  onclick="search('ID')">↑↓</button></th>
+            <th>登录名</th>
+            <th>姓名    <button type="text"  class="btn-sm btn-info" onclick="search('NAME')">↑↓</button></th>
+        </tr>
+        <tr th:each="user : ${userList}">
+            <td th:text="${user.id}">${user.id}</td>
+            <td th:text="${user.loginname}"></td>
+            <td th:text="${user.name}"></td>
+        </tr>
+    </table>
+    </div>
+</div>
+
+</body>
+</html>
